@@ -39,8 +39,9 @@ stationsDict = stations.json()
 
 #debug: Print each station data as one line
 for p in stationsDict:
+    # print p
     for key, value in p.items():
-        print(key + ": " + value)
+         print(key + ": " + value),
 
     print '====================' #separator
 
