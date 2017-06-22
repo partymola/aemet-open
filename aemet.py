@@ -54,31 +54,27 @@ for p in stationsDict:
 
 for station in stationsDict:
     requestUri = station24hUri + station['indicativo'] + "?api_key=" + apikey
-    stationData = httplib.HTTPSConnection("opendata.aemet.es")
-    stationData.request("GET", requestUri)
-    response = stationData.getresponse()
+    conn = httplib.HTTPSConnection("opendata.aemet.es")
+    conn.request("GET", requestUri)
+    response = conn.getresponse()
     data = response.read()
     # print data
     predata = json.loads(data)
 
     uriDatos = predata.get("datos")
-    uriMetadatos = predata.get("metadatos")
+    station24h = requests.get(uriDatos, verify=False)
+    predata = station24h.json()
 
-    data24h = requests.get(uriDatos, verify=False)
-    # data24hDict = data24h.json()
-
-    for p in data24h:
-        # print p
-        a = a + 1
-        # print station['indicativo'],
-        print p
-        #try:
-        # for line in p.items():
-            # singleLine = line.json()
-            # print line,
+    for p in predata:
+        # print type(p)
+        # a = a + 1
+        for a, b in p.items():
+            print a, b
+            #singleLine = line.json()
+            #print line
         #except :
             #print "WRONG DATA"
 
         # print '====================' #separator
         #print
-    time.sleep(5)
+    time.sleep(10)
