@@ -15,11 +15,35 @@ with open ("api.key", "r") as conffile:
 apikey=conf[0]
 #print apikey
 
+allStations = "/opendata/api/valores/climatologicos/inventarioestaciones/todasestaciones"
+station24h = "/opendata/api/observacion/convencional/datos/estacion/"
+allLast24 = "https://opendata.aemet.es/opendata/api/observacion/convencional/todas"
+
 header = 'api_key: ' + apikey
+
+def getUri(aemetData):
+    try:
+        conn = httplib.HTTPSConnection("opendata.aemet.es")
+        conn.request("GET", aemetData)
+        response = conn.getresponse()
+        data = response.read()
+        print data
+        predata = json.loads(data)
+
+        uriDatos = predata.get("datos")
+        uriMetadatos = predata.get("metadatos")
+
+    except:
+        print "Ooops"
+    return
+
+
+# header = 'api_key: ' + apikey
 
 
 allStationsUri = "/opendata/api/valores/climatologicos/inventarioestaciones/todasestaciones"
 station24hUri = "/opendata/api/observacion/convencional/datos/estacion/"
+
 
 uri = allStationsUri + "?api_key=" + apikey
 
@@ -58,18 +82,19 @@ for station in stationsDict:
     conn.request("GET", requestUri)
     response = conn.getresponse()
     data = response.read()
-    # print data
     predata = json.loads(data)
 
-    uriDatos = predata.get("datos")
-    station24h = requests.get(uriDatos, verify=False)
-    predata = station24h.json()
+    uriDatos24h = predata.get("datos")
+    station24h = requests.get(uriDatos24h, verify=False)
+    data24h = station24h.json()
 
-    for p in predata:
-        # print type(p)
+    print type(predata)
+
+    #for p in predata:
+        # print p
         # a = a + 1
-        for a, b in p.items():
-            print a, b
+        # for a in p:
+            #print a,
             #singleLine = line.json()
             #print line
         #except :
