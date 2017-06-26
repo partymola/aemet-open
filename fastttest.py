@@ -5,7 +5,11 @@
 import httplib, urllib, ssl, json, requests, time
 import sys
 from elasticsearch import Elasticsearch
-es = Elasticsearch()
+
+es = Elasticsearch(['localhost'],
+    port=9200,
+    use_ssl=False)
+
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
@@ -48,15 +52,24 @@ p = json.loads(data, 'utf-8')
 
 num = 0
 
+
+
 for i in p:
-    num = num + 1
-    print num, i['idema'],
-    #print i
     # calcutating ElasticSearch ID
     datetime = i['fint'].encode('ascii', 'ignore')
     idema = i['idema'].encode('ascii', 'ignore')
     rawId = datetime + idema
     esId = filter(str.isalnum, rawId)
-    print datetime, idema, esId
+    indexName = 'aemet-open-' + datetime[0:4] + '.' + datetime[5:7]
     # now we generate the geolocation field
+    lat = str(i['lat']).encode('ascii', 'ignore')
+    lon = str(i['lon']).encode('ascii', 'ignore')
+    geolocation = lat + ',' + lon
+    # print datetime, idema, esId, indexName, geolocation
+    # insert required fields into python list
+    i['geolocation'] = geolocation
+    res = es.index(index=indexName, doc_type='aemet', id=esId, body=i)
+    print(res['created'])
+
+
 
