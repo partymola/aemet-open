@@ -68,9 +68,9 @@ for i in p:
     # print datetime, idema, esId, indexName, geolocation
     # insert required fields into python list
     i['geolocation'] = geolocation
-    i['timestamp'] = datetime
+    i['@timestamp'] = datetime
     res = es.index(index=indexName, doc_type='aemet', id=esId, body=i)
-    print(res['created'])
+    print(res)
 
 
 
