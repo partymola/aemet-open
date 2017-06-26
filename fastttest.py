@@ -4,6 +4,8 @@
 
 import httplib, urllib, ssl, json, requests, time
 import sys
+from elasticsearch import Elasticsearch
+es = Elasticsearch()
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
@@ -51,13 +53,10 @@ for i in p:
     print num, i['idema'],
     #print i
     # calcutating ElasticSearch ID
-    rawId = i['fint'].encode('ascii','ignore') + i['idema'].encode('ascii','ignore')
+    datetime = i['fint'].encode('ascii', 'ignore')
+    idema = i['idema'].encode('ascii', 'ignore')
+    rawId = datetime + idema
     esId = filter(str.isalnum, rawId)
-    print esId
-    #for a, b in i.iteritems():
-    #   c = str(a) + ": " + str(b) + " -"
-    #    print c,
-    #print
-    # print "--------------------------------------------------"
-
+    print datetime, idema, esId
+    # now we generate the geolocation field
 
