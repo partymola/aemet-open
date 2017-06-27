@@ -141,7 +141,8 @@ for i in p:
     i['geolocation'] = geolocation
     i['@timestamp'] = datetime
     try:
-        i['provincia'] = stationsdict[idema]
+        estaProv = stationsdict[idema]
+        i['provincia'] = estaProv
     except:
         print "Key for Station" + idema + " not found"
     res = es.index(index=indexName, doc_type='aemet', id=esId, body=i)
