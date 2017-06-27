@@ -14,12 +14,12 @@ reload(sys)
 sys.setdefaultencoding('utf8')
 
 
+
+
 # Load the API key from file api.key
 # Please note the API key has to be obtained at https://opendata.aemet.es/centrodedescargas/altaUsuario
 
 ssl._create_default_https_context = ssl._create_unverified_context
-
-#print uri
 
 provinciasUri = '/centrodedescargas/xml/provincias.xml'
 
@@ -27,7 +27,6 @@ conn = httplib.HTTPSConnection("opendata.aemet.es")
 conn.request("GET",provinciasUri)
 response = conn.getresponse()
 data = response.read()
-# print data
 
 # Creating list for the provinces
 provincias = xml.etree.ElementTree.fromstring(data)
@@ -62,28 +61,23 @@ for key in provdict:
     stations = xml.etree.ElementTree.fromstring(data)
     iter = stations.getiterator('ID')
     ifemas = []
+    thisProv = []
+    currentProv = provdict[key]
+    # print currentProv
     for elem in iter:
         elementName = elem.tag
         elementText = elem.text
         # print elem.tag, elem.text
         ifemas.append(elementText)
+        #print elementText
+        thisProv.append(currentProv)
 
-    iter = stations.getiterator('NOMBRE')
-    nombres = []
-    for elem in iter:
-        elementName = elem.tag
-        elementText = elem.text
-        # print elem.tag, elem.text
-        nombres.append(elementText)
 
-    stationsdict = dict(zip(ifemas,nombres))
+    stationsdict = dict(zip(ifemas,thisProv))
 
-    for i in stationsdict:
-        a = a + 1
-        print a,
-        print i, stationsdict[i]
+    for esto in stationsdict:
+       print esto, stationsdict[esto]
 
-    # print key, provdict[key], stationsUri
 
 
 

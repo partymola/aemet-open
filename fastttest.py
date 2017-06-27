@@ -5,6 +5,9 @@
 import httplib, urllib, ssl, json, requests, time
 import sys
 from elasticsearch import Elasticsearch
+import xml.etree.ElementTree
+
+# define our elasticsearch host
 
 es = Elasticsearch(['localhost'],
     port=9200,
@@ -22,6 +25,74 @@ with open ("api.key", "r") as conffile:
     conf=conffile.readlines()
 
 apikey=conf[0]
+
+# Go get the dictionary with all stations:
+
+ssl._create_default_https_context = ssl._create_unverified_context
+
+provinciasUri = '/centrodedescargas/xml/provincias.xml'
+
+conn = httplib.HTTPSConnection("opendata.aemet.es")
+conn.request("GET",provinciasUri)
+response = conn.getresponse()
+data = response.read()
+
+# Creating list for the provinces
+ssl._create_default_https_context = ssl._create_unverified_context
+
+provinciasUri = '/centrodedescargas/xml/provincias.xml'
+
+conn = httplib.HTTPSConnection("opendata.aemet.es")
+conn.request("GET",provinciasUri)
+response = conn.getresponse()
+data = response.read()
+
+# Creating list for the provinces
+provincias = xml.etree.ElementTree.fromstring(data)
+ids = []
+provs = []
+iter = provincias.getiterator('ID')
+for elem in iter:
+    elementName = elem.tag
+    elementText = elem.text
+    # print elem.tag, elem.text
+    ids.append(elementText)
+
+iter = provincias.getiterator('NOMBRE')
+for elem in iter:
+    elementName = elem.tag
+    elementText = elem.text
+    # print elem.tag, elem.text
+    provs.append(elementText)
+
+provdict = dict(zip(ids,provs))
+
+a = 0
+
+for key in provdict:
+    # we build the URL as above
+    stationsUri = '/centrodedescargas/xml/udat/udat' + key + '.xml'
+    conn = httplib.HTTPSConnection("opendata.aemet.es")
+    conn.request("GET", stationsUri)
+    response = conn.getresponse()
+    data = response.read()
+    # data = data.split("\n",2)[1:]
+    stations = xml.etree.ElementTree.fromstring(data)
+    iter = stations.getiterator('ID')
+    ifemas = []
+    thisProv = []
+    currentProv = provdict[key]
+    # print currentProv
+    for elem in iter:
+        elementName = elem.tag
+        elementText = elem.text
+        # print elem.tag, elem.text
+        ifemas.append(elementText)
+        #print elementText
+        thisProv.append(currentProv)
+
+
+    stationsdict = dict(zip(ifemas,thisProv))
 
 allLast24 = "/opendata/api/observacion/convencional/todas"
 
@@ -69,6 +140,7 @@ for i in p:
     # insert required fields into python list
     i['geolocation'] = geolocation
     i['@timestamp'] = datetime
+    i['provincia'] = stationsdict[idema]
     res = es.index(index=indexName, doc_type='aemet', id=esId, body=i)
     print(res)
 
