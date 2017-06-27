@@ -140,7 +140,10 @@ for i in p:
     # insert required fields into python list
     i['geolocation'] = geolocation
     i['@timestamp'] = datetime
-    i['provincia'] = stationsdict[idema]
+    try:
+        i['provincia'] = stationsdict[idema]
+    except:
+        print "Key for Station" + idema + " not found"
     res = es.index(index=indexName, doc_type='aemet', id=esId, body=i)
     print(res)
 
