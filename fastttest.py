@@ -148,6 +148,7 @@ p = json.loads(data, 'utf-8')
 counter = 0
 creations = 0
 updates = 0
+failures = 0
 
 for i in p:
     counter = counter + 1 # Just a variable to show the final number of records
@@ -184,7 +185,21 @@ for i in p:
     try:
         # we index the result in Elasticsearch
         res = es.index(index=indexName, doc_type='aemet', id=esId, body=i)
-        print(res)
+        #print(res)
+        # I want nice progress dots...
+        print '.',
+        # and stats...
+        if res[result] = 'created':
+            creations = creations + 1
+        elif res[result] = 'updated':
+            updates = updates + 1
     except:
         # Something has failed so we need to take a closer look
-        print 'Oops, something failed when POSTing to Elasticsearch'
+        print 'F',
+        failures = failures + 1
+
+# stats, stats...
+print
+print 'A total of ' + str(counter) + 'lines of data where received. ' + str(creations) + 'were created, ' + str(updates) + 'were updated and ' + str(failures) + 'ElasticSearach operations failed.'
+
+
