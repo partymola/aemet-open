@@ -189,9 +189,9 @@ for i in p:
         # I want nice progress dots...
         print '.',
         # and stats...
-        if res[result] = 'created':
+        if res[result] == 'created':
             creations = creations + 1
-        elif res[result] = 'updated':
+        elif res[result] == 'updated':
             updates = updates + 1
     except:
         # Something has failed so we need to take a closer look
