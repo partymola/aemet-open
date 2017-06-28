@@ -185,13 +185,13 @@ for i in p:
     try:
         # we index the result in Elasticsearch
         res = es.index(index=indexName, doc_type='aemet', id=esId, body=i)
-        #print(res)
         # I want nice progress dots...
-        print (res)
+        sys.stdout.write('.')
+        sys.stdout.flush()
         # and stats...
-        if res[result] == 'created':
+        if res[shards[result]] == 'created':
             creations = creations + 1
-        elif res[result] == 'updated':
+        elif res[shards[result]] == 'updated':
             updates = updates + 1
     except:
         # Something has failed so we need to take a closer look
@@ -200,6 +200,6 @@ for i in p:
 
 # stats, stats...
 print
-print 'A total of ' + str(counter) + 'lines of data where received. ' + str(creations) + 'were created, ' + str(updates) + 'were updated and ' + str(failures) + 'ElasticSearach operations failed.'
+print 'A total of ' + str(counter) + ' lines of data where received. ' + str(creations) + ' were created, ' + str(updates) + ' were updated and ' + str(failures) + ' ElasticSearach operations failed.'
 
 
