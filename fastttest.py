@@ -188,11 +188,11 @@ for i in p:
         # I want nice progress dots...
         #sys.stdout.write('.')
         #sys.stdout.flush()
-        print res[shards]
+        print res[index]
         # and stats...
-        if res[shards[result]] == 'created':
+        if res[index[result]] == 'created':
             creations = creations + 1
-        elif res[shards[result]] == 'updated':
+        elif res[index[result]] == 'updated':
             updates = updates + 1
     except:
         # Something has failed so we need to take a closer look
