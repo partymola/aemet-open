@@ -186,8 +186,9 @@ for i in p:
         # we index the result in Elasticsearch
         res = es.index(index=indexName, doc_type='aemet', id=esId, body=i)
         # I want nice progress dots...
-        sys.stdout.write('.')
-        sys.stdout.flush()
+        #sys.stdout.write('.')
+        #sys.stdout.flush()
+        print res[shards[result]]
         # and stats...
         if res[shards[result]] == 'created':
             creations = creations + 1
