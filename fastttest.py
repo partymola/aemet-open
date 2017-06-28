@@ -187,7 +187,7 @@ for i in p:
         res = es.index(index=indexName, doc_type='aemet', id=esId, body=i)
         #print(res)
         # I want nice progress dots...
-        print '.',
+        print (res)
         # and stats...
         if res[result] == 'created':
             creations = creations + 1
@@ -195,7 +195,7 @@ for i in p:
             updates = updates + 1
     except:
         # Something has failed so we need to take a closer look
-        print 'F',
+        # print 'F',
         failures = failures + 1
 
 # stats, stats...
