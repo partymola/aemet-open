@@ -1,0 +1,41 @@
+{
+  "order": 0,
+  "template": "aemet-open-*",
+  "settings": {
+    "index": {
+      "number_of_shards": "2",
+      "number_of_replicas": "0",
+      "refresh_interval": "5s"
+    }
+  },
+  "mappings": {
+    "string_na": {
+      "properties": {
+        "datetime": {
+          "index": "not_analyzed",
+          "type": "string"
+        },
+        "@timestamp": {
+          "format": "YYYY'-'M'-'dd'T'HH':'mm':'ss",
+          "type": "date"
+        },
+        "fint": {
+          "format": "YYYY'-'M'-'dd'T'HH':'mm':'ss",
+          "type": "date"
+        },
+        "location": {
+          "index": "not_analyzed",
+          "type": "string"
+        }
+      }
+    },
+    "my_type": {
+      "properties": {
+        "geolocation": {
+          "type": "geo_point"
+        }
+      }
+    }
+  },
+  "aliases": {}
+}
