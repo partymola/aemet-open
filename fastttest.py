@@ -188,7 +188,7 @@ for i in p:
         # I want nice progress dots...
         #sys.stdout.write('.')
         #sys.stdout.flush()
-        print res[shards[result]]
+        print res[shards]
         # and stats...
         if res[shards[result]] == 'created':
             creations = creations + 1
@@ -201,6 +201,6 @@ for i in p:
 
 # stats, stats...
 print
-print 'A total of ' + str(counter) + ' lines of data where received. ' + str(creations) + ' were created, ' + str(updates) + ' were updated and ' + str(failures) + ' ElasticSearach operations failed.'
+print 'A total of ' + str(counter) + ' lines of data where received. ' + str(creations) + ' were created, ' + str(updates) + ' were updated and ' + str(failures) + ' ElasticSearch operations failed.'
 
 
