@@ -141,7 +141,7 @@ conn = httplib.HTTPSConnection("opendata.aemet.es")
 conn.request("GET", uriDatos)
 response = conn.getresponse()
 data = response.read()
-data = data.decode('iso-8859-1').encode('utf-8')
+data = data.decode('iso-8859-15').encode('utf-8')
 p = json.loads(data, 'utf-8')
 
 # iterate through the individual data lines
