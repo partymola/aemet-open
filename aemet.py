@@ -204,6 +204,6 @@ for i in p:
 
 # stats, stats...
 print
-print 'A total of ' + str(counter) + ' lines of data where received. ' + str(creations) + ' documents were created, ' + str(updates) + ' were updated and ' + str(failures) + ' ElasticSearch operations failed.'
+print 'A total of ' + str(counter) + ' lines of data were received. ' + str(creations) + ' documents were created, ' + str(updates) + ' were updated and ' + str(failures) + ' ElasticSearch operations failed.'
 
 
